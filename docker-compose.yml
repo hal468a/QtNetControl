@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  qt_app:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: hal468a/pyqt5_armv8:v1.0
+    container_name: qtnetcontroller
+    network_mode: host
+    privileged: true  # 需要有特權才能管理網絡
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./src:/usr/src:rw
+    devices:
+      - /dev/dri:/dev/dri  # Device access
+    group_add:
+      - video  # 添加到 video 組
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+      - TZ=Asia/Taipei
+      - "DISPLAY=$DISPLAY"
+      - QT_X11_NO_MITSHM=1  # 設置 QT_X11_NO_MITSHM
+      - XDG_RUNTIME_DIR=/tmp/runtime-root  # 設置 XDG_RUNTIME_DIR
+      - LIBGL_ALWAYS_SOFTWARE=1  # Fallback to software rendering if necessary
+    working_dir: /usr/src
+    # command: bash -c "python3 qtmain_ifconfig.py --log"
+    command: bash -c "python3 qtmain_ifconfig.py"

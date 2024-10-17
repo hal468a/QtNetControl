@@ -1,0 +1,5 @@
+{
+    "DNS": "8.8.8.8",
+    "PING_TIMEOUT": 1,
+    "LOG": true
+}
